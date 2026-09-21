@@ -1,0 +1,39 @@
+Projeto 1 — Pet Shop Agenda
+============================
+
+Projeto preparado para o desafio de Docker Compose.
+
+Serviços:
+  - frontend: Nginx
+  - backend: Node.js/Express
+  - banco: MySQL 8
+
+Configurações:
+  Rede: rede-petshop
+  Volume: dados_petshop
+  Banco: petshop
+  Frontend: http://localhost:8082
+  Backend: porta 3002
+
+COMANDOS:
+
+1. Criar a rede:
+   docker network create rede-petshop
+
+2. Criar o volume:
+   docker volume create dados_petshop
+
+3. Na raiz do projeto:
+   docker compose up -d --build
+
+4. Verificar:
+   docker ps
+
+5. Acessar:
+   http://localhost:8082
+
+6. Testar persistência:
+   docker compose down
+   docker compose up -d
+
+A documentação completa está em DOCUMENTACAO.md.

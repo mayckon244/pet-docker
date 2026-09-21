@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Agenda profissional para serviços de pet shop.">
+    <title>PetCare | Agenda Pet</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="topbar">
+        <div class="container topbar-inner">
+            <a class="brand" href="#inicio" aria-label="PetCare início">
+                <span class="brand-mark">🐾</span>
+                <span><strong>PetCare</strong><small>Centro de Cuidados</small></span>
+            </a>
+            <nav>
+                <a href="#servicos">Serviços</a>
+                <a href="#agendar">Agendar</a>
+                <a href="#agenda">Minha agenda</a>
+            </nav>
+            <a class="top-action" href="#agendar">Agendar agora</a>
+        </div>
+    </header>
+
+    <main id="inicio">
+        <section class="hero">
+            <div class="container hero-grid">
+                <div>
+                    <span class="eyebrow">CUIDADO QUE SEU PET MERECE</span>
+                    <h1>Um cuidado especial para cada <span>patinha.</span></h1>
+                    <p>Agende banho, tosa e cuidados para o seu melhor amigo de forma rápida, organizada e segura.</p>
+                    <div class="hero-actions">
+                        <a class="btn btn-primary" href="#agendar">Agendar atendimento</a>
+                        <a class="btn btn-light" href="#servicos">Conhecer serviços</a>
+                    </div>
+                    <div class="trust-row">
+                        <span>✓ Atendimento organizado</span>
+                        <span>✓ Agenda online</span>
+                        <span>✓ Dados persistentes</span>
+                    </div>
+                </div>
+                <div class="hero-card" aria-label="Resumo do PetCare">
+                    <div class="pet-illustration">🐶</div>
+                    <div>
+                        <span class="mini-label">PRÓXIMO CUIDADO</span>
+                        <h3>Seu pet em boas mãos</h3>
+                        <p>Escolha o serviço e o melhor horário para o atendimento.</p>
+                    </div>
+                    <div class="hero-stat"><strong id="totalHero">0</strong><span>agendamentos cadastrados</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="container section" id="servicos">
+            <div class="section-heading">
+                <div><span class="eyebrow dark">NOSSOS SERVIÇOS</span><h2>Cuidados para todas as fases</h2></div>
+                <p>Inspirado na experiência digital de grandes pet shops, o sistema reúne os principais serviços em uma agenda simples.</p>
+            </div>
+            <div class="service-grid">
+                <button class="service-card" type="button" onclick="selecionarServico('Banho & Tosa')"><span class="service-icon">🛁</span><strong>Banho & Tosa</strong><small>Higiene, banho e acabamento.</small><b>Agendar →</b></button>
+                <button class="service-card" type="button" onclick="selecionarServico('Consulta veterinária')"><span class="service-icon">🩺</span><strong>Veterinário</strong><small>Consulta e acompanhamento.</small><b>Agendar →</b></button>
+                <button class="service-card" type="button" onclick="selecionarServico('Tosa higiênica')"><span class="service-icon">✂️</span><strong>Tosa higiênica</strong><small>Cuidado e conforto no dia a dia.</small><b>Agendar →</b></button>
+                <button class="service-card" type="button" onclick="selecionarServico('Higiene e cuidados')"><span class="service-icon">🦴</span><strong>Cuidados pet</strong><small>Rotina de higiene e bem-estar.</small><b>Agendar →</b></button>
+            </div>
+        </section>
+
+        <section class="container booking-layout section" id="agendar">
+            <div class="form-card">
+                <div class="card-heading"><div><span class="eyebrow dark">NOVO ATENDIMENTO</span><h2>Agende seu horário</h2></div><span class="step">01</span></div>
+                <form id="agendamentoForm">
+                    <div class="form-section-title">Dados do tutor</div>
+                    <div class="field-grid">
+                        <div class="field"><label for="tutor">Nome completo</label><input required type="text" id="tutor" placeholder="Ex.: Maria Silva"></div>
+                        <div class="field"><label for="telefone">Telefone</label><input required type="tel" id="telefone" placeholder="(21) 99999-9999"></div>
+                    </div>
+
+                    <div class="form-section-title">Dados do pet</div>
+                    <div class="field-grid three">
+                        <div class="field"><label for="pet">Nome do pet</label><input required type="text" id="pet" placeholder="Ex.: Thor"></div>
+                        <div class="field"><label for="especie">Espécie</label><select id="especie"><option>Cachorro</option><option>Gato</option><option>Outro</option></select></div>
+                        <div class="field"><label for="raca">Raça</label><input type="text" id="raca" placeholder="Ex.: Golden Retriever"></div>
+                    </div>
+
+                    <div class="form-section-title">Atendimento</div>
+                    <div class="field-grid">
+                        <div class="field"><label for="servico">Serviço</label><select required id="servico"><option value="">Selecione um serviço</option><option>Banho & Tosa</option><option>Consulta veterinária</option><option>Tosa higiênica</option><option>Higiene e cuidados</option></select></div>
+                        <div class="field"><label for="data">Data e horário</label><input required type="datetime-local" id="data"></div>
+                    </div>
+                    <div class="field"><label for="observacoes">Observações <span>(opcional)</span></label><textarea id="observacoes" rows="3" placeholder="Alguma informação importante sobre o pet..."></textarea></div>
+                    <button class="btn btn-primary submit" id="submitBtn" type="submit">Confirmar agendamento <span>→</span></button>
+                    <p class="form-note">Seus dados são usados apenas para organizar o atendimento deste projeto acadêmico.</p>
+                </form>
+            </div>
+
+            <aside class="info-card">
+                <span class="eyebrow dark">POR QUE PETCARE?</span>
+                <h2>Uma agenda pensada para facilitar sua rotina.</h2>
+                <div class="info-item"><span>✓</span><div><strong>Agendamento simples</strong><p>Escolha o serviço, o pet e o horário em poucos passos.</p></div></div>
+                <div class="info-item"><span>✓</span><div><strong>Histórico organizado</strong><p>Os atendimentos ficam registrados para consulta.</p></div></div>
+                <div class="info-item"><span>✓</span><div><strong>Experiência responsiva</strong><p>Interface adaptada para computador e celular.</p></div></div>
+                <div class="info-highlight"><strong>🐾 Cuidado em cada detalhe</strong><span>Seu pet merece uma experiência tranquila.</span></div>
+            </aside>
+        </section>
+
+        <section class="container section" id="agenda">
+            <div class="agenda-header">
+                <div><span class="eyebrow dark">MINHA AGENDA</span><h2>Atendimentos recentes</h2></div>
+                <div class="agenda-tools"><input id="busca" type="search" placeholder="Buscar pet ou tutor..." aria-label="Buscar agendamento"><span class="counter" id="contador">0</span></div>
+            </div>
+            <div id="lista" class="agenda-list"></div>
+        </section>
+    </main>
+
+    <footer><div class="container footer-inner"><strong>🐾 PetCare</strong><span>Projeto acadêmico • Sistema containerizado com Docker</span></div></footer>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="script.js"></script>
+</body>
+</html>

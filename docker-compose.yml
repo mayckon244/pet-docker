@@ -1,0 +1,46 @@
+services:
+  front:
+    build: ./frontend
+    container_name: petshop-front
+    ports:
+      - "8082:80"
+    networks:
+      - rede-petshop
+    depends_on:
+      - back
+
+  back:
+    build: ./backend
+    container_name: petshop-back
+    ports:
+      - "3002:3002"
+    networks:
+      - rede-petshop
+    depends_on:
+      banco:
+        condition: service_healthy
+
+  banco:
+    image: mysql:8.0
+    container_name: petshop-banco
+    environment:
+      MYSQL_ROOT_PASSWORD: "123456"
+      MYSQL_DATABASE: "petshop"
+    volumes:
+      - dados_petshop:/var/lib/mysql
+      - ./banco/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - rede-petshop
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p123456"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+networks:
+  rede-petshop:
+    external: true
+
+volumes:
+  dados_petshop:
+    external: true

@@ -1,73 +1,343 @@
-Documentação — Pet Shop Agenda com Docker
+# 🐾 Pet Shop Agenda — Docker
 
-Este documento apresenta o processo utilizado para preparar e executar o projeto Pet Shop Agenda utilizando Docker, conforme as orientações da atividade.
+Sistema simples para **cadastro e agendamento de serviços de Pet Shop**, desenvolvido com frontend, backend em Node.js e banco de dados MySQL, utilizando **Docker** para containerização e gerenciamento do ambiente.
 
-1. Objetivo do projeto
+---
 
-O projeto consiste em um sistema simples para um Pet Shop realizar o cadastro e o agendamento de serviços, como banho e tosa. A aplicação possui frontend, backend em Node.js e banco de dados MySQL.
+## 📋 Sobre o projeto
 
-2. Estrutura utilizada
+O **Pet Shop Agenda** permite realizar o cadastro e o agendamento de serviços, como:
 
-A aplicação foi organizada em três partes principais: frontend, backend e banco de dados. O frontend é responsável pela interface que o usuário acessa pelo navegador. O backend recebe as informações e realiza a comunicação com o banco de dados. O MySQL armazena os registros cadastrados.
+- 🛁 Banho
+- ✂️ Tosa
+- 🐶 Outros serviços para pets
 
-3. Dockerfile do frontend
+A aplicação é composta por três serviços principais:
 
-Foi utilizado um Dockerfile dentro da pasta frontend. Ele contém as instruções necessárias para criar a imagem do frontend e disponibilizar os arquivos da aplicação através de um servidor dentro do container.
+| Serviço | Tecnologia | Função |
+|---|---|---|
+| 🎨 Frontend | HTML/CSS/JS | Interface acessada pelo navegador |
+| ⚙️ Backend | Node.js | Processamento das requisições e comunicação com o banco |
+| 🗄️ Banco de dados | MySQL | Armazenamento dos registros |
 
-4. Dockerfile do backend
+Todos os serviços são executados em **containers Docker** e se comunicam através de uma rede própria.
 
-Também foi criado um Dockerfile dentro da pasta backend. Ele prepara o ambiente Node.js, instala as dependências necessárias e executa a aplicação do backend dentro de um container.
+---
 
-5. Rede Docker
+## 🏗️ Arquitetura do projeto
 
-Foi utilizada a rede chamada rede-petshop. Essa rede permite que o frontend, o backend e o banco de dados se comuniquem entre si dentro do ambiente Docker.
+```text
+                    ┌─────────────────────┐
+                    │      Navegador      │
+                    │   localhost:8082    │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │      Frontend       │
+                    │       :8082         │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │       Backend       │
+                    │       :3002         │
+                    │       Node.js       │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │        MySQL        │
+                    │      Database       │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │   dados_petshop     │
+                    │       Volume        │
+                    └─────────────────────┘
+```
 
-6. Volume do banco de dados
+---
 
-Foi criado o volume dados_petshop. Ele é utilizado pelo MySQL para armazenar os dados fora do ciclo de vida do container. Dessa forma, os registros podem continuar disponíveis quando os containers são parados e iniciados novamente.
+## 📁 Estrutura do projeto
 
-7. Banco de dados
+```text
+pet-shop-agenda/
+│
+├── frontend/
+│   └── Dockerfile
+│
+├── backend/
+│   └── Dockerfile
+│
+├── docker-compose.yml
+│
+└── README.md
+```
 
-O banco de dados utilizado é o MySQL e o nome definido para o banco da aplicação é petshop. O backend utiliza esse banco para armazenar e consultar os registros do sistema.
+---
 
-8. Docker Compose
+## 🐳 Docker
 
-Foi criado o arquivo docker-compose.yml na raiz do projeto. Ele reúne as configurações dos três serviços: frontend, backend e banco de dados. Também define as portas, a rede e o volume utilizados pelo projeto. Dessa forma, os serviços podem ser iniciados de maneira organizada através de um único comando.
+O projeto utiliza Docker para executar cada parte da aplicação de forma independente.
 
-9. Portas utilizadas
+### 🎨 Frontend
 
-O frontend foi configurado na porta 8082 e o backend na porta 3002. O usuário acessa o sistema pelo navegador através de http://localhost:8082.
+O diretório `frontend` possui um `Dockerfile` responsável por criar a imagem e executar a interface da aplicação dentro de um container.
 
-10. Criação da rede e do volume
+### ⚙️ Backend
 
-Antes de iniciar a aplicação, foram utilizados os comandos docker volume create dados_petshop e docker network create rede-petshop para criar o volume e a rede necessários ao projeto.
+O diretório `backend` possui um `Dockerfile` responsável por:
 
-11. Inicialização da aplicação
+- Preparar o ambiente Node.js;
+- Instalar as dependências;
+- Executar a aplicação backend;
+- Disponibilizar a API para comunicação com o frontend.
 
-Depois das configurações, a aplicação é iniciada com o comando docker compose up -d --build. O parâmetro --build faz com que as imagens sejam construídas ou atualizadas e o -d executa os containers em segundo plano.
+### 🗄️ Banco de dados
 
-12. Verificação
+O banco utilizado é o **MySQL**.
 
-Após iniciar o projeto, é utilizado o comando docker ps para verificar se os três containers estão funcionando: frontend, backend e banco. Em seguida, o sistema é acessado pelo navegador em http://localhost:8082 e é realizado um cadastro de teste.
+O nome do banco de dados da aplicação é:
 
-13. Teste de persistência
+```text
+petshop
+```
 
-Para verificar se o volume está funcionando, o projeto pode ser parado com docker compose down e iniciado novamente com docker compose up -d. O registro cadastrado deve continuar disponível, demonstrando que os dados foram mantidos pelo volume dados_petshop.
+---
 
-14. Resultado
+## 🌐 Rede Docker
 
-Ao final, o projeto fica preparado para funcionar em Docker com frontend, backend e MySQL separados em containers, comunicando-se pela rede rede-petshop e utilizando o volume dados_petshop para persistência dos dados. A pasta completa do projeto pode então ser enviada para o GitHub conforme solicitado na atividade.
+Foi criada uma rede Docker chamada:
 
-Comandos principais utilizados
+```text
+rede-petshop
+```
 
-docker volume create dados_petshop
+Essa rede permite que os containers do:
 
+- Frontend
+- Backend
+- MySQL
+
+se comuniquem internamente.
+
+Para criar a rede manualmente:
+
+```bash
 docker network create rede-petshop
+```
 
+---
+
+## 💾 Persistência dos dados
+
+Para garantir que os dados do MySQL não sejam perdidos quando o container for removido ou recriado, foi utilizado um volume Docker chamado:
+
+```text
+dados_petshop
+```
+
+Criação do volume:
+
+```bash
+docker volume create dados_petshop
+```
+
+O volume mantém os dados do banco fora do ciclo de vida do container.
+
+---
+
+## 🔌 Portas utilizadas
+
+| Serviço | Porta |
+|---|---:|
+| Frontend | `8082` |
+| Backend | `3002` |
+| MySQL | Interna do container |
+
+Após iniciar a aplicação, o frontend pode ser acessado através de:
+
+```text
+http://localhost:8082
+```
+
+---
+
+## ⚙️ Docker Compose
+
+O arquivo `docker-compose.yml`, localizado na raiz do projeto, reúne as configurações necessárias para executar os três serviços.
+
+Ele é responsável por configurar:
+
+- 🖥️ Frontend
+- ⚙️ Backend
+- 🗄️ MySQL
+- 🌐 Rede Docker
+- 💾 Volume de persistência
+- 🔌 Portas dos serviços
+
+Dessa forma, todo o ambiente pode ser iniciado utilizando um único comando.
+
+---
+
+## 🚀 Como executar o projeto
+
+### 1. Clone o repositório
+
+```bash
+git clone <URL_DO_REPOSITORIO>
+```
+
+Entre na pasta do projeto:
+
+```bash
+cd pet-shop-agenda
+```
+
+### 2. Crie a rede Docker
+
+```bash
+docker network create rede-petshop
+```
+
+### 3. Crie o volume do banco
+
+```bash
+docker volume create dados_petshop
+```
+
+### 4. Inicie a aplicação
+
+```bash
 docker compose up -d --build
+```
 
+O parâmetro `--build` faz com que as imagens sejam construídas ou atualizadas.
+
+O parâmetro `-d` executa os containers em segundo plano.
+
+---
+
+## 🔎 Verificando os containers
+
+Depois de iniciar a aplicação, utilize:
+
+```bash
 docker ps
+```
 
+Os três containers principais deverão estar em execução:
+
+```text
+Frontend
+Backend
+MySQL
+```
+
+---
+
+## 🌎 Acessando a aplicação
+
+Com os containers em execução, abra o navegador e acesse:
+
+```text
+http://localhost:8082
+```
+
+Após acessar o sistema, realize um **cadastro de teste** para verificar o funcionamento da aplicação.
+
+---
+
+## 🧪 Teste de persistência
+
+Para verificar se o volume do banco está funcionando corretamente, primeiro pare os containers:
+
+```bash
 docker compose down
+```
 
+Depois, inicie novamente:
+
+```bash
 docker compose up -d
+```
+
+Acesse novamente:
+
+```text
+http://localhost:8082
+```
+
+O cadastro realizado anteriormente deverá continuar disponível.
+
+Isso demonstra que os dados estão sendo armazenados no volume:
+
+```text
+dados_petshop
+```
+
+---
+
+## 📌 Comandos principais
+
+### Criar volume
+
+```bash
+docker volume create dados_petshop
+```
+
+### Criar rede
+
+```bash
+docker network create rede-petshop
+```
+
+### Construir e iniciar
+
+```bash
+docker compose up -d --build
+```
+
+### Ver containers em execução
+
+```bash
+docker ps
+```
+
+### Parar e remover os containers
+
+```bash
+docker compose down
+```
+
+### Iniciar novamente
+
+```bash
+docker compose up -d
+```
+
+---
+
+## ✅ Resultado
+
+Ao final da configuração, o projeto estará funcionando com:
+
+- ✅ Frontend em container Docker;
+- ✅ Backend Node.js em container Docker;
+- ✅ MySQL em container Docker;
+- ✅ Comunicação através da rede `rede-petshop`;
+- ✅ Persistência através do volume `dados_petshop`;
+- ✅ Frontend disponível na porta `8082`;
+- ✅ Backend disponível na porta `3002`.
+
+A aplicação fica preparada para ser executada de maneira padronizada utilizando Docker e pode ser versionada e compartilhada através do **GitHub**.
+
+---
+
+## 👨‍💻 Projeto
+
+**Pet Shop Agenda**
+
+Projeto desenvolvido como atividade prática de **Docker, containers, Node.js e MySQL**.
